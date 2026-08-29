@@ -1,4 +1,11 @@
 (() => {
+  if (!document.querySelector('link[href="/a11y.css"]')) {
+    const a11y = document.createElement('link');
+    a11y.rel = 'stylesheet';
+    a11y.href = '/a11y.css';
+    document.head.appendChild(a11y);
+  }
+
   const main = document.querySelector('main');
   if (main && !main.id) main.id = 'main-content';
 
