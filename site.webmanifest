@@ -1,0 +1,15 @@
+{
+  "name": "Cyber Security Agency Australia",
+  "short_name": "CSA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "lang": "en-AU",
+  "description": "Australian-founded technology institution with an operating presence in Australia and the United States, developing governed AI, human assurance, intelligent operations and cyber-risk infrastructure for global markets.",
+  "scope": "/",
+  "icons": [
+    {"src":"/apple-touch-icon.png","sizes":"180x180","type":"image/png"},
+    {"src":"/icon-512.png","sizes":"512x512","type":"image/png"}
+  ]
+}
