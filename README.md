@@ -6,7 +6,7 @@ This repository is the source home for the Cyber Security Agency Australia Pty L
 
 ## Canonical public contact
 
-- Email: contact@cs-agency.com.au
+- Email: info@cs-agency.com.au
 - Head Office: Brisbane, Queensland, Australia
 - North America Office: New York, New York, USA
 - Public street addresses: not published
