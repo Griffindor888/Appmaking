@@ -9,7 +9,7 @@ ORG_DESC='Australian-founded technology institution with an operating presence i
 KEYWORDS='Cyber Security Agency Australia, CSA, governed AI, AI governance, autonomous systems, AI workforce, cyber security Australia, cyber security United States, WARDALE OS, Solurius, AUTTO Connect, Cyber Security Insurance Australia, CSiA, digital trust, human assurance, Brisbane, New York, global technology'
 NY_STREET='30 Wall Street, 8th Floor'
 
-NAV='''<nav class="nav"><div class="wrap navin"><a class="brand" href="/"><span class="brandmark">CSA</span><span class="brandname">Cyber Security Agency Australia</span></a><div class="navlinks"><a href="/company/">Company</a><a href="/ecosystem/">Ecosystem</a><a href="/technology/">Technology</a><a href="/governance/">Governance</a><a href="/industries/">Industries</a><a href="/trust/">Trust</a><a href="/research/">Research</a></div><div class="navright"><a class="quietlink" href="/contact/">Contact</a><button class="menu">Menu</button></div></div></nav>'''
+NAV='''<a class="skiplink" href="#main-content">Skip to main content</a><nav class="nav"><div class="wrap navin"><a class="brand" href="/"><span class="brandmark">CSA</span><span class="brandname">Cyber Security Agency Australia</span></a><div class="navlinks" id="primary-navigation"><a href="/company/">Company</a><a href="/ecosystem/">Ecosystem</a><a href="/technology/">Technology</a><a href="/governance/">Governance</a><a href="/industries/">Industries</a><a href="/trust/">Trust</a><a href="/research/">Research</a></div><div class="navright"><a class="quietlink" href="/contact/">Contact</a><button class="menu" type="button" aria-controls="primary-navigation" aria-expanded="false">Menu</button></div></div></nav>'''
 FOOT='''<footer class="footer"><div class="wrap"><div class="footTop"><div class="footBrand"><div class="brand"><span class="brandmark">CSA</span><span class="brandname">Cyber Security Agency Australia</span></div><p>Australian-founded technology institution developing governed AI, human assurance, intelligent operations and cyber-risk infrastructure.</p><p class="footContact"><a href="mailto:info@cs-agency.com.au">info@cs-agency.com.au</a><br>Brisbane · Australia &nbsp; / &nbsp; New York · United States</p></div><div><h4>Institution</h4><a href="/company/">Company</a><a href="/governance/">Governance</a><a href="/trust/">Trust Centre</a><a href="/contact/">Contact</a></div><div><h4>Ecosystem</h4><a href="/platforms/wardale/">WARDALE</a><a href="/platforms/solurius/">Solurius</a><a href="/platforms/autto-connect/">AUTTO Connect</a><a href="/platforms/csia/">CSiA</a></div><div><h4>Knowledge</h4><a href="/research/">Research & Insights</a><a href="/knowledge/">Public knowledge</a><a href="/library/">Enterprise library</a></div><div><h4>Legal & security</h4><a href="/privacy/">Privacy</a><a href="/terms/">Website Terms</a><a href="/security/">Security & Disclosure</a><a href="/accessibility/">Accessibility</a></div></div><div class="legal"><span>Cyber Security Agency Australia Pty Ltd · ABN 89 659 238 570 · ACN 659 238 570</span><span>© 2026 Cyber Security Agency Australia</span></div></div></footer>'''
 
 PAGES=json.loads(zlib.decompress(base64.b64decode(Path('pages.b64').read_text(encoding='ascii'))).decode('utf-8'))
@@ -42,12 +42,12 @@ def metadata(route,title,desc):
       '<meta property="og:site_name" content="Cyber Security Agency Australia">',
       f'<meta property="og:title" content="{html.escape(title,quote=True)}">',
       f'<meta property="og:description" content="{html.escape(desc,quote=True)}">',
-      f'<meta property="og:url" content="{canonical}">',
+      f'<meta property="og:url" content="{canonical}">','<meta property="og:image" content="https://cs-agency.com.au/social-card.png">','<meta property="og:image:width" content="1200">','<meta property="og:image:height" content="630">','<meta property="og:image:alt" content="Cyber Security Agency Australia — Digital Headquarters">',
       '<meta property="og:locale" content="en_AU">',
       '<meta property="og:locale:alternate" content="en_US">',
-      '<meta name="twitter:card" content="summary">',
+      '<meta name="twitter:card" content="summary_large_image">',
       f'<meta name="twitter:title" content="{html.escape(title,quote=True)}">',
-      f'<meta name="twitter:description" content="{html.escape(desc,quote=True)}">',
+      f'<meta name="twitter:description" content="{html.escape(desc,quote=True)}">','<meta name="twitter:image" content="https://cs-agency.com.au/social-card.png">','<meta name="twitter:image:alt" content="Cyber Security Agency Australia — Digital Headquarters">',
       f'<link rel="canonical" href="{canonical}">',
       f'<link rel="alternate" hreflang="en" href="{canonical}">',
       f'<link rel="alternate" hreflang="x-default" href="{canonical}">',
@@ -61,7 +61,7 @@ def write_page(route,data):
     out=ROOT/('index.html' if route=='/' else route.strip('/')+'/index.html')
     out.parent.mkdir(parents=True,exist_ok=True)
     title=data['title']; desc=data['desc']; body=data['body']
-    doc='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+html.escape(title)+'</title><meta name="description" content="'+html.escape(desc,quote=True)+'">'+metadata(route,title,desc)+'<link rel="stylesheet" href="/styles.css"><script defer src="/app.js"></script></head><body>'+NAV+'<main>'+body+'</main>'+FOOT+'</body></html>'
+    doc='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+html.escape(title)+'</title><meta name="description" content="'+html.escape(desc,quote=True)+'">'+metadata(route,title,desc)+'<link rel="stylesheet" href="/styles.css"><script defer src="/app.js"></script></head><body>'+NAV+'<main id="main-content">'+body+'</main>'+FOOT+'</body></html>'
     out.write_text(doc,encoding='utf-8')
 
 for route,data in PAGES.items():
@@ -69,6 +69,7 @@ for route,data in PAGES.items():
 for name in ['styles.css','app.js']:
     (ROOT/name).write_text(Path(name).read_text(encoding='utf-8'),encoding='utf-8')
 (ROOT/'favicon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#ffffff"/><path d="M14 32c0-10 8-18 18-18h18v8H32c-5.5 0-10 4.5-10 10s4.5 10 10 10h18v8H32c-10 0-18-8-18-18Z" fill="#283740"/><path d="M50 14v8H34l8-8h8Z" fill="#0a88c8"/></svg>',encoding='utf-8')
+(ROOT/'social-card.png').write_bytes(base64.b64decode(Path('social-card.b64').read_text(encoding='ascii')))
 (ROOT/'site.webmanifest').write_text(json.dumps({'name':'Cyber Security Agency Australia','short_name':'CSA','start_url':'/','display':'standalone','background_color':'#ffffff','theme_color':'#ffffff','lang':'en-AU','description':ORG_DESC},indent=2),encoding='utf-8')
 (ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\nDisallow: /library/\nSitemap: https://cs-agency.com.au/sitemap.xml\n',encoding='utf-8')
 routes=[r for r in PAGES if r!='/library/']
