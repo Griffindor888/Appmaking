@@ -7,8 +7,16 @@ Repository purpose: institution-grade digital headquarters for Cyber Security Ag
 ## Repository identity
 
 - Preferred repository display name: `CSA | Cyber Security Agency HQ/Aus`
-- Current local clone path: `/home/runner/work/Appmaking/Appmaking`
+- Current local clone path: `/home/runner/work/CSA-Cyber-Security-Agency-HQ-Aus-/CSA-Cyber-Security-Agency-HQ-Aus-`
 - If needed, update the GitHub repository name in **Settings → General → Repository name** to match the preferred display name.
+
+## Vercel after repository rename
+
+To ensure Vercel reads this renamed repository:
+
+1. In Vercel, open the project and confirm the linked Git repository is `Griffindor888/CSA-Cyber-Security-Agency-HQ-Aus-`.
+2. Confirm **Root Directory** is repository root (`.`) and no custom build/output directories are set for this static site.
+3. Trigger a redeploy from the latest commit so Vercel refreshes repository linkage and deployment metadata.
 
 ## Legal entity and public contact
 
