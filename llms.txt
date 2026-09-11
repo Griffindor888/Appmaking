@@ -31,6 +31,7 @@ CSA is an Australian-founded technology institution developing connected systems
 /knowledge/
 /engagement/
 /contact/
+/start/
 /security/
 /privacy/
 /terms/
