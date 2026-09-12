@@ -38,8 +38,24 @@ try {
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   assert.ok(overflow <= 1, `390px selector must not overflow horizontally; overflow=${overflow}px`);
-  assert.deepEqual(browserErrors, [], `browser errors: ${browserErrors.join('; ')}`);
   await page.screenshot({ path: 'artifacts/csa-start-mobile.png', fullPage: true });
+
+  const routes = [
+    '/', '/accessibility/', '/company/', '/contact/', '/ecosystem/', '/engagement/',
+    '/governance/', '/industries/', '/knowledge/', '/platforms/autto-connect/',
+    '/platforms/csia/', '/platforms/solurius/', '/platforms/wardale/', '/privacy/',
+    '/research/', '/security/', '/start/', '/technology/', '/terms/', '/trust/',
+  ];
+
+  for (const route of routes) {
+    const response = await page.goto(`${baseURL}${route}`, { waitUntil: 'networkidle' });
+    assert.equal(response?.status(), 200, `${route} must return 200`);
+    assert.equal(await page.locator('main').count(), 1, `${route} must contain one main landmark`);
+    const routeOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    assert.ok(routeOverflow <= 1, `${route} must not overflow at 390px; overflow=${routeOverflow}px`);
+  }
+
+  assert.deepEqual(browserErrors, [], `browser errors: ${browserErrors.join('; ')}`);
 } finally {
   await browser.close();
 }
