@@ -7,6 +7,8 @@ on:
       - '*.css'
       - '*.js'
       - 'tests/csa-mobile-smoke.mjs'
+      - 'tests/csa-commercial-intake-db-acceptance.sh'
+      - 'supabase/migrations/**'
       - '.github/workflows/csa-mobile-validation.yml'
   workflow_dispatch:
 
@@ -16,12 +18,36 @@ permissions:
 jobs:
   mobile-chromium:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: csa_commercial_acceptance
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d csa_commercial_acceptance"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/csa_commercial_acceptance
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Verify isolated durable commercial intake
+        run: bash tests/csa-commercial-intake-db-acceptance.sh
+      - name: Assert commercial evidence boundary
+        run: |
+          grep -F "CSA_ENQUIRY_CONSENT_REQUIRED" supabase/migrations/20260913020000_csa_commercial_intake.sql
+          grep -F "CSA_ENQUIRY_RATE_LIMITED" supabase/migrations/20260913020000_csa_commercial_intake.sql
+          grep -F "revoke all on table public.csa_commercial_enquiries" supabase/migrations/20260913020000_csa_commercial_intake.sql
+          grep -F "regulated advice, broking, underwriting and placement remain with appropriately authorised providers" supabase/migrations/20260913020000_csa_commercial_intake.sql
       - name: Install pinned browser runner
         run: |
           npm install --no-save --package-lock=false playwright@1.55.0
