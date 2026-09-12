@@ -1,10 +1,14 @@
 (() => {
-  if (!document.querySelector('link[href="/a11y.css"]')) {
-    const a11y = document.createElement('link');
-    a11y.rel = 'stylesheet';
-    a11y.href = '/a11y.css';
-    document.head.appendChild(a11y);
-  }
+  const ensureStylesheet = (href) => {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const stylesheet = document.createElement('link');
+    stylesheet.rel = 'stylesheet';
+    stylesheet.href = href;
+    document.head.appendChild(stylesheet);
+  };
+
+  ensureStylesheet('/a11y.css');
+  ensureStylesheet('/mobile-nav.css');
 
   const main = document.querySelector('main');
   if (main && !main.id) main.id = 'main-content';
