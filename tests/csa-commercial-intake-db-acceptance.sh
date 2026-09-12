@@ -14,6 +14,12 @@ SQL
 
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 \
   -f supabase/migrations/20260913020000_csa_commercial_intake.sql
+psql "$DATABASE_URL" -v ON_ERROR_STOP=1 \
+  -f supabase/migrations/20260913022000_csa_commercial_intake_hardening.sql
+
+test "$(psql "$DATABASE_URL" -X -qAt -c "select has_function_privilege('anon', 'public.submit_csa_commercial_enquiry(text,text,text,text,text,text,boolean,uuid,text,text)', 'EXECUTE')")" = "t"
+test "$(psql "$DATABASE_URL" -X -qAt -c "select has_function_privilege('authenticated', 'public.submit_csa_commercial_enquiry(text,text,text,text,text,text,boolean,uuid,text,text)', 'EXECUTE')")" = "f"
+test "$(psql "$DATABASE_URL" -X -qAt -c "select count(*) from pg_indexes where schemaname = 'public' and tablename = 'csa_commercial_enquiry_events' and indexdef ilike '%(enquiry_receipt_id)%'")" = "1"
 
 if psql "$DATABASE_URL" -X -q -v ON_ERROR_STOP=1 -c \
   "set role anon; insert into public.csa_commercial_enquiries(correlation_id,pathway,organisation,contact_name,email,timeframe,requirement,source_path,consent_recorded_at) values (gen_random_uuid(),'wardale','Bypass Org','Bypass Person','bypass@example.com','immediate','Attempted direct write','/start/',now())"; then
