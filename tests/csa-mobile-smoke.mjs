@@ -23,7 +23,11 @@ try {
 
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('.menu').getAttribute('aria-expanded'), 'false');
-  assert.equal(await page.locator('.menu').isFocused(), true, 'Escape must restore menu focus');
+  assert.equal(
+    await page.locator('.menu').evaluate(element => element === document.activeElement),
+    true,
+    'Escape must restore menu focus',
+  );
 
   await page.goto(`${baseURL}/start/`, { waitUntil: 'networkidle' });
   assert.equal(await page.locator('.choice').count(), 4, 'commercial selector must expose four systems');
