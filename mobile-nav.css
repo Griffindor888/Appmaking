@@ -17,4 +17,20 @@
   .navlinks.navlinks-open a {
     padding: 12px 0;
   }
+
+  .table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+  }
+
+  .table th,
+  .table td {
+    overflow-wrap: anywhere;
+  }
+
+  .csaGlobe,
+  .ecosystem {
+    max-width: 100%;
+  }
 }
